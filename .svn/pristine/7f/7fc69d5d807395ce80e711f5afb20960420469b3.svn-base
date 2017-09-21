@@ -1,0 +1,633 @@
+/**
+ * Created by dxn on 2017/6/19.
+ */
+var container0 = null;
+var container1 = null;
+var container2 = null;
+var container3 = null;
+var menory_container = null;
+var container0TimeData = [];
+var container1TimeData = [];
+var container2TimeData = [];
+var container3TimeData = [];
+$(function () {
+    container0 = new Highcharts.Chart({
+        title: {
+            text: 'CPU使用记录',
+            x: -20
+        },
+        chart: {
+            type:'line',
+            renderTo: 'container0',
+        },
+        subtitle: {
+            text: '记录使用率',
+            x: -20
+        },
+        xAxis: {
+            title: {
+                text: '时间'
+            },
+            categories: []
+        },
+        yAxis: {
+            title: {
+                text: '使用率 (%)'
+            },
+            max:100,
+            min:0
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    radius: 1
+                }
+            }
+        },
+        series: [{
+            name: '时间',
+            data: []
+        }]
+    });
+    container1 = new Highcharts.Chart({
+        title: {
+            text: 'CPU使用记录',
+            x: -20
+        },
+        chart: {
+            type:'line',
+            renderTo: 'container1',
+        },
+        subtitle: {
+            text: '记录使用率',
+            x: -20
+        },
+        xAxis: {
+            title: {
+                text: '时间'
+            },
+            categories: []
+        },
+        yAxis: {
+            title: {
+                text: '使用率 (%)'
+            },
+            max:100,
+            min:0
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    radius: 1
+                }
+            }
+        },
+        series: [{
+            name: '时间',
+            data: []
+        }]
+    });
+    container2 = new Highcharts.Chart({
+        title: {
+            text: 'CPU使用记录',
+            x: -20
+        },
+        chart: {
+            type:'line',
+            renderTo: 'container2',
+        },
+        subtitle: {
+            text: '记录使用率',
+            x: -20
+        },
+        xAxis: {
+            title: {
+                text: '时间'
+            },
+            categories: []
+        },
+        yAxis: {
+            title: {
+                text: '使用率 (%)'
+            },
+            max:100,
+            min:0
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    radius: 1
+                }
+            }
+        },
+        series: [{
+            name: '时间',
+            data: []
+        }]
+    });
+    container3 = new Highcharts.Chart({
+        title: {
+            text: 'CPU使用记录',
+            x: -20
+        },
+        chart: {
+            type:'line',
+            renderTo: 'container3',
+        },
+        subtitle: {
+            text: '记录使用率',
+            x: -20
+        },
+        xAxis: {
+            title: {
+                text: '时间'
+            },
+            categories: []
+        },
+        yAxis: {
+            title: {
+                text: '使用率 (%)'
+            },
+            max:100,
+            min:0
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    radius: 1
+                }
+            }
+        },
+        series: [{
+            name: '时间',
+            data: []
+        }]
+    });
+    menory_container = new Highcharts.Chart({
+        // $('#menory_container').highcharts({
+        // chart: {
+        //     type: 'area'
+        // },
+        chart: {
+            type: 'spline',
+            renderTo: 'menory_container',
+            zoomType: 'x'
+        },
+        title: {
+            text: '内存使用情况'
+        },
+        // subtitle: {
+        //     text: '内存使用情况'
+        // },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+        },
+        xAxis: {
+            allowDecimals: false,
+            categories:[],
+            // 坐标轴标题
+            title: {
+                text: '时间'
+            },
+            // ceiling:50//自动计算坐标轴极值的上限
+            tickPixelInterval: 10//设置刻度间隔为
+        },
+        yAxis:{
+            title: {
+                text: '内存'
+            },
+            tickAmount:10//刻度数
+        },
+        tooltip: {
+            split: true,
+            pointFormat: '{series.name} <b>{point.y:,.2f}</b>'
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            },
+            series: {
+                marker: {
+                    radius: 1
+                }
+            }
+        },
+        series: [{name:"使用内存",data:[]}]
+    });
+    connect();
+    get_display_list();
+});
+/**
+ * 服务器监控
+ */
+// function display_baoxiu_count(content){
+//     var
+// }
+/**
+ * 布局
+ * @param content
+ */
+function display_list(content) {
+    $('#title_disk_info').html('');
+    var cpu_info_list = content.cpu_info_list;
+    var menory_info_list = content.menory_info_list;
+    var disk_info_list = content.disk_info_list;
+    /*-----------cpu info------------*/
+
+    $.each(cpu_info_list,function(index,item){
+        if (index == 0){
+            /**
+             * 新增点，获取原来点的总数判断是否需要删除第一个点
+             */
+            var container0_data_length = container0.series[0].data.length;
+            if (container0_data_length>20){
+                // 第三个参数表示是否删除第一个点
+                container0.series[0].addPoint(parseFloat(item.cpuUseRate), true, true);
+                container0TimeData.splice(0,1);
+            }else{
+                container0.series[0].addPoint(parseFloat(item.cpuUseRate), true, false);
+            }
+            container0TimeData.push(item.addTime);
+        }
+        if (index == 1){
+            /**
+             * 新增点，获取原来点的总数判断是否需要删除第一个点
+             */
+            var container1_data_length = container1.series[0].data.length;
+            if (container1_data_length>20){
+                // 第三个参数表示是否删除第一个点
+                container1.series[0].addPoint(parseFloat(item.cpuUseRate), true, true);
+                container1TimeData.splice(0,1);
+            }else{
+                container1.series[0].addPoint(parseFloat(item.cpuUseRate), true, false);
+            }
+            container1TimeData.push(item.addTime);
+        }
+        if (index == 2){
+            /**
+             * 新增点，获取原来点的总数判断是否需要删除第一个点
+             */
+            var container2_data_length = container2.series[0].data.length;
+            if (container2_data_length>20){
+                // 第三个参数表示是否删除第一个点
+                container2.series[0].addPoint(parseFloat(item.cpuUseRate), true, true);
+                container2TimeData.splice(0,1);
+            }else{
+                container2.series[0].addPoint(parseFloat(item.cpuUseRate), true, false);
+            }
+            container2TimeData.push(item.addTime);
+        }
+        if (index == 3){
+            /**
+             * 新增点，获取原来点的总数判断是否需要删除第一个点
+             */
+            var container3_data_length = container3.series[0].data.length;
+            if (container3_data_length>20){
+                // 第三个参数表示是否删除第一个点
+                container3.series[0].addPoint(parseFloat(item.cpuUseRate), true, true);
+                container3TimeData.splice(0,1);
+            }else{
+                container3.series[0].addPoint(parseFloat(item.cpuUseRate), true, false);
+            }
+            container3TimeData.push(item.addTime);
+        }
+    });
+    for(var j=0;j<container0TimeData.length;j++){
+        container0.xAxis[0].categories.push(container0TimeData[j]);
+    }
+    for(var j=0;j<container1TimeData.length;j++){
+        container1.xAxis[0].categories.push(container1TimeData[j]);
+    }
+    for(var j=0;j<container2TimeData.length;j++){
+        container2.xAxis[0].categories.push(container2TimeData[j]);
+    }
+    for(var j=0;j<container3TimeData.length;j++){
+        container3.xAxis[0].categories.push(container3TimeData[j]);
+    }
+    /*-----------cpu info------------*/
+    /*-----------menory info------------*/
+    var TimeData = [];
+    // var menoryTotalData = [];
+    var menoryUserdData = [];
+    $.each(menory_info_list,function(index,item){
+        TimeData.push(item.add_time);
+        menoryUserdData.push(item.Userd_Memory);
+    })
+    // strJsonMenorySeries += '[{name:"Free_Memory",data:['+menoryFreeData+']},' +
+    //     '{name:"Total_Memory",data:['+menoryUserdData+']},' +
+    //     '{name:"Using_Rate",data:['+menoryUsingRateData+'],yAxis:1}]';
+    // strJsonMenorySeries += '[{type: "area",name:"Userd_Memory",data:['+menoryUserdData+']}]';
+    // strJsonMenorySeries += '[{name:"Userd_Memory",data:['+menoryUserdData+']}]';
+    // var jsonMenorySeries = eval('(' + strJsonMenorySeries + ')');
+
+    //这块比较变态，必须要这样做才可以，不然不刷新    之前ajax是可以的 不知道为什么
+    for(var j=0;j<TimeData.length;j++){
+        menory_container.xAxis[0].categories.push(TimeData[j]);
+    }
+
+    // menory_container.series[0].setData(jsonMenorySeries);
+    menory_container.series[0].setData(menoryUserdData);
+    menory_container.redraw(true);
+    /*-----------menory info------------*/
+    /*-----------disk info------------*/
+    var htmlDisk = '<h3>硬盘监控</h3>';
+    $('#title_disk_info').append(htmlDisk);
+    $.each(disk_info_list,function(index,item){
+        htmlDisk = '<div id ="containerDisk'+index+'" style="margin-left:20px;margin-top:10px;width:200px;height: 200px;float: left;"></div>';
+        $('#title_disk_info').append(htmlDisk);
+        $('#containerDisk'+index+'').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: item.diskName+'盘'
+            },
+            tooltip: {
+                headerFormat: '{series.name}<br>',
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                // name: '盘符: C',
+                name: item.diskName+' 总内存：'+item.dbDiskTotalG,
+                data: [
+                    ['已使用', parseFloat(item.dbDiskUsed)],
+                    ['空闲', parseFloat(item.dbDiskFree)]
+                ]
+            }]
+        });
+    });
+    /*-----------disk info------------*/
+}
+function connect() {
+
+    if ('WebSocket' in window) {
+
+        ipAddress = document.location.hostname;
+        ws = new WebSocket("ws://" + ipAddress + ipPort + ctx+"/handle");
+
+    } else {
+
+        ws = new SockJS("http://" + ipAddress + ipPort + ctx+"/sockjs");
+
+    }
+
+    ws.onopen = function() {
+    };
+    ws.onmessage = function(event) {
+//		alert(event.data);
+        var res = eval('(' + event.data + ')');
+        // display_baoxiu_count(res.list_day_report_by_hour);
+
+        display_list(res);
+
+    };
+    ws.onclose = function(event) {
+        //TODO:关闭连接
+    };
+}
+
+//断开websocket连接
+function disconnect() {
+    if (ws != null) {
+        ws.close();
+        ws = null;
+    }
+}
+/**
+ * 进入当前界面时获取
+ */
+function get_display_list(){
+    $.ajax({
+        type:"POST",
+        dataType:'json',
+        url:ctx+'/monitor/sigar/list',
+        // data:{
+        //     'selectDate':date
+        // },
+        async:false,
+        success:function(data){
+            display_list(data);
+        }
+    });
+}
+formatterDateHMS = function(date) {
+    return date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+};
+/*
+
+$(function () {
+	
+	
+	if (!window.WebSocket) { 
+                alert("WebSocket not supported by this browser!"); 
+    } 
+	var ws = new WebSocket("ws://localhost:8888");
+	ws.onopen = function(){  
+		console.log("open");
+	};
+
+	ws.onmessage = function(evt){
+		console.log(evt.data)
+	};
+
+	ws.onclose = function(evt){
+	  console.log("WebSocketClosed!");
+	};
+
+	ws.onerror = function(evt){
+  	console.log("WebSocketError!");
+
+	};
+
+	
+	
+    $('#container1').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'CPU 1'
+        },
+        tooltip: {
+            headerFormat: '{series.name}<br>',
+            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '盘符: C',
+            data: [
+                ['已使用',   45.0],
+                ['空闲',       65.0]
+            ]
+        }]
+    });
+    
+    $('#container2').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'CPU 1'
+        },
+        tooltip: {
+            headerFormat: '{series.name}<br>',
+            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '盘符: C',
+            data: [
+                ['已使用',   45.0],
+                ['空闲',       65.0]
+            ]
+        }]
+    });
+    
+    
+    
+    $('#container3').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'CPU 1'
+        },
+        tooltip: {
+            headerFormat: '{series.name}<br>',
+            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '盘符: C',
+            data: [
+                ['已使用',   45.0],
+                ['空闲',       65.0]
+            ]
+        }]
+    });
+    
+    
+    
+    $('#container4').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'CPU 1'
+        },
+        tooltip: {
+            headerFormat: '{series.name}<br>',
+            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '盘符: C',
+            data: [
+                ['已使用',   45.0],
+                ['空闲',       65.0]
+            ]
+        }]
+    });
+});*/
+
+

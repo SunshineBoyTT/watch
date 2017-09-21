@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<@h.head/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>监控系统</title>
+<!-- <script type="text/javascript"
+	src="${ctx}/static/index/js/jquery-3.2.1.min.js"></script>  -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script type="text/javascript" src="${ctx}/static/index/js/index.js"></script>
+<script type="text/javascript" src="${ctx}/static/index/js/zhuti.js"></script>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<!--  <link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous"> --> 
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<!--  <script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>  -->
+	<style type="text/css">
+		.container-fluid h3{
+			font-size:16px;
+		}
+	</style>
+</head>
+<body>
+		 <div class="container-fluid hjh_full_height">
+				<input id="url" type="hidden" value="${tbMonitor.tbmUrl!''}">
+				<div id="title"
+					style="text-align: center; border: solid 0px darkgoldenrod;  color: darkgoldenrod;">
+					<h1>${tbMonitor.tbmName}</h1>
+				</div>
+
+				<div id="title_cpu">
+					<div id="title_cpu_info">
+						<h3 style="width:18%;margin-left:2%;">CPU监控</h3>
+					</div>
+				</div>
+
+
+				<div id="title_menory" style="clear: both;padding-top:0.1%;">
+					<div style="width:50%;display:block;float:left;">
+						<div id="title_menory_info" style="width:92%;margin:0 auto;">
+						<h3  style="width:18%;margin-left:2%;">CPU均值监控</h3>
+						<div id="cpu_av_container" style="margin:0 auto;"></div>
+					</div>
+					</div>
+					
+					<div style="width:50%;display:block;float:left;">
+						<div id="title_menory_info" style="width:92%;margin:0 auto;">
+						<h3  style="width:18%;margin-left:2%;">内存监控</h3>
+						<div id="menory_container" style="margin:0 auto;"></div>
+					</div>
+					</div>
+
+				</div>
+			   <div id="title_disk" style="clear: both;padding-top:0.1%;">
+					<div id="title_disk_info">
+						<h3 style="width:10%;margin-left:2%;">硬盘监控</h3>
+					</div>
+				</div> 
+			</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<@h.head/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>性能监控</title>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="${ctx}/static/css/dashboard.css" />
+<script type="text/javascript"
+	src="${ctx}/static/index/js/jquery-3.2.1.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+	<script type="text/javascript"
+	src="${ctx}/static/js/monitor.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div id="sidebar-menu" class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar navbar-default">
+					<!-- <li onclick="change1()" class="active"><a>数据统计 </a></li>
+					<li onclick="change2()"><a id="l_nav_2">文章管理</a></li>
+					<li onclick="change3()"><a id="l_nav_3">发布文章</a></li> -->
+				</ul>
+			</div>
+			<div id="content"
+				class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

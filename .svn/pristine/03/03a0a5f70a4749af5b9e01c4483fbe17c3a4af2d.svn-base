@@ -1,0 +1,52 @@
+/**
+ * 
+ */
+package com.spring.base.utils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
+
+/**
+ * @Description:
+ * @author zhengjuntao@hjtechcn.cn
+ * @Since:2017年9月18日
+ * @Version:1.1.0
+ */
+public class CookieUtil {
+	
+	public static  void  SetCookie(HttpServletRequest request,HttpServletResponse response){
+		boolean hasUidCookie=false;
+		//判断是否已经设置过Uid
+		if (request.getCookies()!=null) {
+			for (Cookie v_Cookie : request.getCookies()) {
+				if ("uid".equals(v_Cookie.getName())) {
+					hasUidCookie=true;
+				}
+			}
+		}
+		
+		//Cookie不存在
+		if (!hasUidCookie) {
+			Cookie cookie = new Cookie("uid",UUID.randomUUID().toString());
+	    	cookie.setPath("/");
+	    	response.addCookie(cookie);
+		}
+		
+	}
+	
+	/**
+	 * 获取Cookie的key值
+	 */
+	public static String getUid(HttpServletRequest request,String key){
+		String uid=null;
+		for (Cookie v_Cookie : request.getCookies()) {
+			if (key.equals(v_Cookie.getName())) {
+				uid=v_Cookie.getValue();
+			}
+		}
+		return  uid;
+	}
+	
+}

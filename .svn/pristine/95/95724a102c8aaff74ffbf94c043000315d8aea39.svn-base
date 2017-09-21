@@ -1,0 +1,454 @@
+/**
+ * Created by dxn on 2017/6/19.
+ */
+$(function () {
+    connect();
+    get_display_list();
+});
+/**
+ * 服务器监控
+ */
+// function display_baoxiu_count(content){
+//     var
+// }
+/**
+ * 布局
+ * @param content
+ */
+function display_list(content) {
+    $('#title_cpu_info').html('');
+    $('#title_disk_info').html('');
+    var cpu_info_list = content.cpu_info_list;
+    var menory_info_list = content.menory_info_list;
+    var disk_info_list = content.disk_info_list;
+    /*-----------cpu info------------*/
+    var htmlCpu = '<h3>CPU监控</h3>';
+    // var htmlMenory = '';
+    $('#title_cpu_info').append(htmlCpu);
+    $.each(cpu_info_list,function(index,item){
+        htmlCpu = '<div id ="container'+index+'" style="margin-left:20px;margin-top:10px;width:200px;height: 200px;float: left;"></div>';
+        $('#title_cpu_info').append(htmlCpu);
+        $('#container'+index+'').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: item.CpuName
+            },
+            tooltip: {
+                headerFormat: '{series.name}<br>',
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                // name: '盘符: C',
+                name: item.CpuName,
+                data: [
+                    ['已使用', parseFloat(item.CpuUseRate)],
+                    ['空闲', parseFloat(item.CpuNoUseRate)]
+                ]
+            }]
+        });
+    });
+    /*-----------cpu info------------*/
+    /*-----------menory info------------*/
+    var TimeData = [];
+    // var menoryTotalData = [];
+    var menoryUserdData = [];
+    var menoryFreeData = [];
+    var menoryUsingRateData = [];
+    var strJsonMenorySeries = '';
+    $.each(menory_info_list,function(index,item){
+        // htmlMenory = '<div id ="container'+index+'" style="margin-left:20px;margin-top:30px;width:200px;height: 200px;float: left;"></div>';
+        TimeData.push(item.add_time);
+        // menoryTotalData.push(item.Total_Memory);
+        menoryUserdData.push(item.Userd_Memory);
+        // menoryFreeData.push(item.Free_Memory);
+        // menoryUsingRateData.push(item.Using_Rate);
+    })
+    // strJsonMenorySeries += '[{name:"Free_Memory",data:['+menoryFreeData+']},' +
+    //     '{name:"Total_Memory",data:['+menoryUserdData+']},' +
+    //     '{name:"Using_Rate",data:['+menoryUsingRateData+'],yAxis:1}]';
+    strJsonMenorySeries += '[{type: "area",name:"Userd_Memory",data:['+menoryUserdData+']}]';
+    var jsonMenorySeries = eval('(' + strJsonMenorySeries + ')');
+    $('#menory_container').highcharts({
+        // chart: {
+        //     type: 'area'
+        // },
+        chart: {
+            zoomType: 'x'
+        },
+        title: {
+            text: '内存使用情况'
+        },
+        // subtitle: {
+        //     text: '内存使用情况'
+        // },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                '鼠标拖动可以进行缩放' : '手势操作进行缩放'
+        },
+        xAxis: {
+            allowDecimals: false,
+            labels: {
+                formatter: function () {
+                    return this.value; // clean, unformatted number for year
+                }
+            },
+            categories:TimeData,
+            // 坐标轴标题
+            title: {
+                text: '时间'
+            },
+            // ceiling:50//自动计算坐标轴极值的上限
+            tickPixelInterval: 10//设置刻度间隔为
+        },
+        // yAxis: [{
+        //     title: {
+        //         text: '内存'
+        //     },
+        //     labels: {
+        //         formatter: function () {
+        //             return this.value+'MB';
+        //         }
+        //     },
+        //     tickInterval: 500
+        // }, {
+        //     opposite: true,
+        //     title: {
+        //         text: '内存使用率'
+        //     },
+        //     labels: {
+        //         formatter: function () {
+        //             return this.value+'%';
+        //         }
+        //     }
+        // }],
+        yAxis:{
+            title: {
+                text: '内存'
+            },
+            labels: {
+                formatter: function () {
+                    return this.value+'MB';
+                }
+            },
+            tickInterval: 500
+        },
+        tooltip: {
+            split: true,
+            // pointFormat: '{series.name} <b>{point.y:,.0f}</b>%'
+            pointFormat: '{series.name} <b>{point.y:,.2f}</b>'
+        },
+        plotOptions: {
+            // area: {
+            //     stacking: 'normal',
+            //     lineColor: '#666666',
+            //     lineWidth: 1,
+            //     marker: {
+            //         lineWidth: 1,
+            //         lineColor: '#666666'
+            //     }
+            // }
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+        },
+        series: jsonMenorySeries
+    });
+    /*-----------menory info------------*/
+    /*-----------disk info------------*/
+    var htmlDisk = '<h3>硬盘监控</h3>';
+    $('#title_disk_info').append(htmlDisk);
+    $.each(disk_info_list,function(index,item){
+        htmlDisk = '<div id ="containerDisk'+index+'" style="margin-left:20px;margin-top:10px;width:200px;height: 200px;float: left;"></div>';
+        $('#title_disk_info').append(htmlDisk);
+        $('#containerDisk'+index+'').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: item.diskName+'盘'
+            },
+            tooltip: {
+                headerFormat: '{series.name}<br>',
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                // name: '盘符: C',
+                name: item.diskName+' 总内存：'+item.dbDiskTotalG,
+                data: [
+                    ['已使用', parseFloat(item.dbDiskUsed)],
+                    ['空闲', parseFloat(item.dbDiskFree)]
+                ]
+            }]
+        });
+    });
+    /*-----------disk info------------*/
+}
+function connect() {
+
+    if ('WebSocket' in window) {
+
+        ipAddress = document.location.hostname;
+        ws = new WebSocket("ws://" + ipAddress + ipPort + ctx+"/handle");
+
+    } else {
+
+        ws = new SockJS("http://" + ipAddress + ipPort + ctx+"/sockjs");
+
+    }
+
+    ws.onopen = function() {
+    };
+    ws.onmessage = function(event) {
+//		alert(event.data);
+        var res = eval('(' + event.data + ')');
+        // display_baoxiu_count(res.list_day_report_by_hour);
+
+        display_list(res);
+
+    };
+    ws.onclose = function(event) {
+        //TODO:关闭连接
+    };
+}
+
+//断开websocket连接
+function disconnect() {
+    if (ws != null) {
+        ws.close();
+        ws = null;
+    }
+}
+/**
+ * 进入当前界面时获取
+ */
+function get_display_list(){
+    $.ajax({
+        type:"POST",
+        dataType:'json',
+        url:ctx+'/monitor/sigar/list',
+        // data:{
+        //     'selectDate':date
+        // },
+        async:false,
+        success:function(data){
+            display_list(data);
+        }
+    });
+}
+/*
+
+ $(function () {
+
+
+ if (!window.WebSocket) {
+ alert("WebSocket not supported by this browser!");
+ }
+ var ws = new WebSocket("ws://localhost:8888");
+ ws.onopen = function(){
+ console.log("open");
+ };
+
+ ws.onmessage = function(evt){
+ console.log(evt.data)
+ };
+
+ ws.onclose = function(evt){
+ console.log("WebSocketClosed!");
+ };
+
+ ws.onerror = function(evt){
+ console.log("WebSocketError!");
+
+ };
+
+
+
+ $('#container1').highcharts({
+ chart: {
+ plotBackgroundColor: null,
+ plotBorderWidth: null,
+ plotShadow: false
+ },
+ title: {
+ text: 'CPU 1'
+ },
+ tooltip: {
+ headerFormat: '{series.name}<br>',
+ pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+ },
+ plotOptions: {
+ pie: {
+ allowPointSelect: true,
+ cursor: 'pointer',
+ dataLabels: {
+ enabled: false
+ },
+ showInLegend: true
+ }
+ },
+ series: [{
+ type: 'pie',
+ name: '盘符: C',
+ data: [
+ ['已使用',   45.0],
+ ['空闲',       65.0]
+ ]
+ }]
+ });
+
+ $('#container2').highcharts({
+ chart: {
+ plotBackgroundColor: null,
+ plotBorderWidth: null,
+ plotShadow: false
+ },
+ title: {
+ text: 'CPU 1'
+ },
+ tooltip: {
+ headerFormat: '{series.name}<br>',
+ pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+ },
+ plotOptions: {
+ pie: {
+ allowPointSelect: true,
+ cursor: 'pointer',
+ dataLabels: {
+ enabled: false
+ },
+ showInLegend: true
+ }
+ },
+ series: [{
+ type: 'pie',
+ name: '盘符: C',
+ data: [
+ ['已使用',   45.0],
+ ['空闲',       65.0]
+ ]
+ }]
+ });
+
+
+
+ $('#container3').highcharts({
+ chart: {
+ plotBackgroundColor: null,
+ plotBorderWidth: null,
+ plotShadow: false
+ },
+ title: {
+ text: 'CPU 1'
+ },
+ tooltip: {
+ headerFormat: '{series.name}<br>',
+ pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+ },
+ plotOptions: {
+ pie: {
+ allowPointSelect: true,
+ cursor: 'pointer',
+ dataLabels: {
+ enabled: false
+ },
+ showInLegend: true
+ }
+ },
+ series: [{
+ type: 'pie',
+ name: '盘符: C',
+ data: [
+ ['已使用',   45.0],
+ ['空闲',       65.0]
+ ]
+ }]
+ });
+
+
+
+ $('#container4').highcharts({
+ chart: {
+ plotBackgroundColor: null,
+ plotBorderWidth: null,
+ plotShadow: false
+ },
+ title: {
+ text: 'CPU 1'
+ },
+ tooltip: {
+ headerFormat: '{series.name}<br>',
+ pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+ },
+ plotOptions: {
+ pie: {
+ allowPointSelect: true,
+ cursor: 'pointer',
+ dataLabels: {
+ enabled: false
+ },
+ showInLegend: true
+ }
+ },
+ series: [{
+ type: 'pie',
+ name: '盘符: C',
+ data: [
+ ['已使用',   45.0],
+ ['空闲',       65.0]
+ ]
+ }]
+ });
+ });*/
+
+

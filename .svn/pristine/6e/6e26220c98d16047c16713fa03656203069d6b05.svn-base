@@ -1,0 +1,35 @@
+/** 事件监听区域 */
+$(document).on("click", "#sidebar-menu ul li a", function(e) {
+	$(e.target).parent().parent().find("li").removeClass('active');
+	$(e.target).parent().addClass('active');
+})
+$(function() {
+	initData();
+})
+/** 函数区域 */
+function loadIndex(id) {
+	$("#content").html("");
+	$("#content").load('../admin/statistics.html');
+}
+
+function initData() {
+	$.ajax({
+		type : "GET",
+		url : "monitor/list",
+		data : {},
+		dataType : "json",
+		success : function(data) {
+			if(data.code==100){
+				console.log(data.list);
+				var html="";
+				$.each(data.list,function(index,item){
+					html+="<li><a>"+item.tbmName+" </a></li>";
+				})
+				$("#sidebar-menu ul").html(html);
+			}else{
+				alert(data.message);
+			}
+		}
+	});
+
+}

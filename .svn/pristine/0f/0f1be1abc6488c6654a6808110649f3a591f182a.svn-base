@@ -1,0 +1,68 @@
+package com.spring.base.websocket;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.spring.base.websocket.common.Global;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+
+import com.spring.common.service.DataOperateService;
+import com.spring.base.websocket.util.SpringHelper;
+
+
+@Component
+public class RefreshStatisticTask{
+	
+	private static final Logger logger = LoggerFactory.getLogger(RefreshStatisticTask.class);
+
+
+	private static boolean isRun = false;
+	@Scheduled(cron = "0/5 * * * * ?")
+//	@Scheduled(cron = "0/10 * * * * ?")
+//	@Scheduled(cron = "*/50 * * * * ?")
+	public void listDay(){
+		// TODO Auto-generated method stub
+		
+		 if (isRun) {
+			 return;
+		 }
+		 
+		 isRun = true;
+		
+		try {
+            DataOperateService dataOperateService = (DataOperateService) SpringHelper.getBean("dataOperateService");
+            
+            boolean ret = dataOperateService.refreshData();
+            if (ret) {
+            	WsResponse response = new WsResponse();
+				response.setCpu_info_list(Global.g_Cpu_list);
+				response.setDisk_info_list(Global.g_disk_list);
+				response.setMenory_info_map(Global.g_memory_map);
+            	JsonHelper helper = new JsonHelper();			
+            	TextMessage message = new TextMessage(helper.objectToJson(response));
+            	List<UserSocketVo> list = WSSessionLocalCache.getAllSessions();
+            	for (UserSocketVo uv : list) {
+            		System.err.println(uv.toString());
+            		logger.info("推送："+message.getPayload());
+            	    uv.getWebSocketSession().sendMessage(message);
+            	}
+            } else {
+            	logger.error("没有数据更新!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("出错", e);
+        }
+		
+		isRun = false;
+
+	}
+
+
+	
+
+}

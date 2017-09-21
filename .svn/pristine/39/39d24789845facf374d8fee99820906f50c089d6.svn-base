@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<@h.head/>
+		<meta charset="utf-8" />
+		<title>杭州华舰-服务器监控系统</title>
+		<script type="text/javascript" src="${ctx}/static/index/js/jquery-3.2.1.min.js"></script>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+		<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+		<script type="text/javascript" src="${ctx}/static/index/js/index.js"></script>
+		<script type="text/javascript" src="${ctx}/static/index/js/zhuti.js"></script>
+	</head>
+	<body style="background-color: #000000;">
+		
+	<div  id ="title"  style="margin-top:10px; margin-left:10px;text-align:center;
+		border: solid  0px darkgoldenrod;width:95%;height: 100px;color:darkgoldenrod;">
+		<h1>杭州华舰-服务器监控系统</h1>
+	</div>
+	
+	
+	
+	
+	<div  id ="title_cpu"  style="margin-top:20px; margin-left:10px;text-align:center;
+		border: solid  1px #FFFFFF;width:95%;height: 300px;">
+		<div  id ="title_cpu_info"  style="margin-top:10px; margin-left:20px;text-align:left;
+			border-bottom: solid  1px #FFFFFF;width:95%;height: 30px;color:#2B908F;">
+			<h3>CPU监控</h3>
+			<div id ="container0" style="margin-left:20px;margin-top:10px;width:400px;height: 200px;float: left;"></div>
+			<div id ="container1" style="margin-left:20px;margin-top:10px;width:400px;height: 200px;float: left;"></div>
+			<div id ="container2" style="margin-left:20px;margin-top:10px;width:400px;height: 200px;float: left;"></div>
+			<div id ="container3" style="margin-left:20px;margin-top:10px;width:400px;height: 200px;float: left;"></div>
+		</div>
+		
+	</div>
+	
+	
+	<div  id ="title_menory"  style="margin-top:20px; margin-left:10px;text-align:center;
+		border: solid  1px #FFFFFF;width:95%;height: 500px;">
+		<div  id ="title_menory_info"  style="margin-top:10px; margin-left:20px;text-align:left;
+			border-bottom: solid  1px #FFFFFF;width:95%;height:30px;color:#2B908F;">
+		  <h3>内存监控</h3>
+			<div id="menory_container" style="margin-left:20px;margin-top:30px;width:95%;height: 400px;"></div>
+		</div>
+		
+	</div>
+	
+	<div  id ="title_disk"  style="margin-top:20px; margin-left:10px;text-align:center;
+		border: solid  1px #FFFFFF;width:95%;height: 300px;">
+		<div  id ="title_disk_info"  style="margin-top:10px; margin-left:20px;text-align:left;
+			border-bottom: solid  1px #FFFFFF;width:95%;height: 30px;color:#2B908F;">
+		</div>
+		
+	</div>
+	
+	
+	
+		
+	</body>
+</html>
